@@ -93,8 +93,8 @@
     <Compile Include="EisExtension\Model\Conversion\IILang\Percepts\EISEmptyNamedPerceptSerializer.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\JSLibrary\JSLibrary.csproj">
-      <Project>{D1BFB5F5-681E-4D5F-9910-69403B11C5B5}</Project>
+    <ProjectReference Include="..\..\JSLibrary\JSLibrary\JSLibrary\JSLibrary.csproj">
+      <Project>{02121c4a-b1fb-46b8-bde8-c5c6ca28c036}</Project>
       <Name>JSLibrary</Name>
     </ProjectReference>
     <ProjectReference Include="..\XmasEngineController\XmasEngineController.csproj">
@@ -121,8 +121,8 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>xcopy /y "$(TargetDir)*.dll" "$(SolutionDir)..\UnityTestGame\Assets\dlls"
-xcopy /y "$(TargetDir)*.xml" "$(SolutionDir)..\UnityTestGame\Assets\dlls"</PostBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
