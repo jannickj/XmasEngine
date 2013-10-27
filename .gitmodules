@@ -1,0 +1,3 @@
+[submodule "JSLibrary"]
+	path = JSLibrary
+	url = https://github.com/jannickj/JSLibrary.git
