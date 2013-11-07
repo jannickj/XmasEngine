@@ -65,6 +65,7 @@
     <Compile Include="Exceptions\UnacceptableActionException.cs" />
     <Compile Include="Exceptions\UnconvertableException.cs" />
     <Compile Include="Management\ActionManager.cs" />
+    <Compile Include="Management\Actions\AddXmasObjectAction.cs" />
     <Compile Include="Management\Actions\CloseEngineAction.cs" />
     <Compile Include="Management\Actions\GetAllPerceptsAction.cs">
       <SubType>Code</SubType>
