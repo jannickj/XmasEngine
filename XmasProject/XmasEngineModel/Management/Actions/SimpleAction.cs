@@ -14,7 +14,6 @@ namespace XmasEngineModel.Management.Actions
 		protected override void Execute()
 		{
 			action(this);
-			Complete();
 		}
 	}
 }

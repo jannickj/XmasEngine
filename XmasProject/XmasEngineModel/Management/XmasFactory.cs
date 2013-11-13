@@ -28,7 +28,6 @@ namespace XmasEngineModel.Management
         /// <summary>
         /// Creates a specially designed timer that queues its action to the engine when the timer has expired, thus this timer is threadsafe
         /// </summary>
-        /// <param name="owner">The action that is owner of the timer</param>
         /// <param name="action">The action that the timer executes</param>
         /// <returns>The timer</returns>
 		public TimedAction CreateTimer(Action action)

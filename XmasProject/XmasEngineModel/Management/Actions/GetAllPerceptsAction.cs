@@ -11,7 +11,7 @@ namespace XmasEngineModel.Management.Actions
 		protected override void Execute()
 		{
 			Source.Raise(new RetreivePerceptsEvent(new PerceptCollection(new List<Percept>(Source.Percepts))));
-			Complete();
+	
 		}
 
 		#endregion
