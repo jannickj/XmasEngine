@@ -5,7 +5,7 @@ using System.Text;
 
 namespace XmasEngineModel.Management.Actions
 {
-	public class AddXmasObjectAction : XmasAction
+	public class AddXmasObjectAction : EnvironmentAction
 	{
 		public XmasObject Object { get; private set; }
 
