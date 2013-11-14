@@ -30,6 +30,15 @@ namespace XmasEngineModel.EntityLib
 
 
         /// <summary>
+        /// Is called when the object is added to an engine
+        /// </summary>
+        internal protected virtual void OnAddedToEngine()
+        {
+
+        }
+
+
+        /// <summary>
         /// Registers a module to an entity, if an entity already has the module attached it will override the old module and return it.
         /// </summary>
         /// <param name="module">The module to be added to the entity</param>

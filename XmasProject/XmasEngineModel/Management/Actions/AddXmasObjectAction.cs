@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using XmasEngineModel.EntityLib;
 
 namespace XmasEngineModel.Management.Actions
 {
@@ -23,6 +24,9 @@ namespace XmasEngineModel.Management.Actions
 				actor.EventManager = EventManager;
 				actor.World = World;
 				actor.Factory = Factory;
+
+                if (actor is XmasUniversal)
+                    ((XmasUniversal)actor).OnAddedToEngine();
 			}
 		}
 	}

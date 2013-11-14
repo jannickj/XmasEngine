@@ -5,6 +5,7 @@ using XmasEngineModel.Exceptions;
 using XmasEngineModel.Interfaces;
 using XmasEngineModel.Management;
 using XmasEngineModel.Management.Events;
+using XmasEngineModel.EntityLib;
 
 namespace XmasEngineModel
 {
@@ -129,7 +130,9 @@ namespace XmasEngineModel
 			actor.EventManager = EventManager;
 			actor.World = World;
 			actor.Factory = Factory;
-			
+
+            if (actor is XmasUniversal)
+                ((XmasUniversal)actor).OnAddedToEngine();
 		}
 
 		#region EVENTS
