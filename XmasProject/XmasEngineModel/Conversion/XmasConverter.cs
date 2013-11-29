@@ -1,4 +1,6 @@
-﻿namespace XmasEngineModel.Conversion
+﻿using XmasEngineModel.Exceptions;
+
+namespace XmasEngineModel.Conversion
 {
 	public abstract class XmasConverter
 	{
@@ -40,7 +42,7 @@
 		/// <summary>
 		/// Requests the conversion of an XmasObject into an object, only if the ConversionTool the converter is added to is this possible.
 		/// </summary>
-		/// <exception cref="UnconvertableException">Is thrown if conversion was not possible</exception>
+        /// <exception cref="UnconvertableException">Is thrown if conversion was not possible</exception>
 		/// <param name="gobj">The XmasObject to be converted</param>
 		/// <returns>The object the XmasObject was converted into</returns>
 		protected object ConvertToForeign(XmasObject gobj)

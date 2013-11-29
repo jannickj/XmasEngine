@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using XmasEngineModel.Attributes;
 using XmasEngineModel.EntityLib;
 
 namespace XmasEngineModel.Management
@@ -57,7 +56,8 @@ namespace XmasEngineModel.Management
 		protected abstract void Execute();
 
         /// <summary>
-        /// Calling this indicates to the engine that the action has completed, this method should only be called once and only when the action is truly completed
+        /// Calling this indicates to the engine that the action has completed, this method should only be called once and only when the action is truly completed.
+        /// UPDATE: THIS METHOD NO LONGER DOES ANYTHING
         /// </summary>
         [Obsolete("No longer necessary",false)]
 		protected void Complete()
@@ -158,7 +158,6 @@ namespace XmasEngineModel.Management
             this.parentAction = parent;
         }
 
-        [VirtualNotImplemented("The action is not thread safe if clonable is not implemented")]
         public virtual object Clone()
         {
             return this;

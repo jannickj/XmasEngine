@@ -23,7 +23,6 @@ namespace XmasEngineModel.Management.Actions
 			ent.Factory = Factory;
 
 			if (World.AddEntity (ent, info)) {
-				this.Complete ();
 			} else {
 				this.Fail ();
 			}

@@ -7,7 +7,6 @@ namespace XmasEngineModel.Management.Actions
 		protected override void Execute()
 		{
 			EventManager.Raise(new EngineCloseEvent());
-			Complete();
 		}
 	}
 }

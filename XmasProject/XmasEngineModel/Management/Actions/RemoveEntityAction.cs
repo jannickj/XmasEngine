@@ -16,7 +16,7 @@ namespace XmasEngineModel.Management.Actions
 		protected override void Execute()
 		{
 			World.RemoveEntity(ent);
-			Complete ();
+	
 			
 		}
 	}

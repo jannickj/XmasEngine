@@ -33,9 +33,8 @@ namespace XmasEngineModel
 		protected abstract XmasWorld ConstructWorld ();
 
         /// <summary>
-        /// Builds a full world along with all entities added to it
+        /// Builds a full world along
         /// </summary>
-        /// <param name="actman">The action manager of the engine</param>
         /// <returns>The fully built world</returns>
 		public XmasWorld Build()
 		{

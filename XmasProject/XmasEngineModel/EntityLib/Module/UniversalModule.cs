@@ -54,7 +54,7 @@ namespace XmasEngineModel.EntityLib.Module
 		/// <summary>
 		/// Attaches the module to an entity
 		/// </summary>
-		/// <param name="entityHost">The host the module is attached to</param>
+		/// <param name="Host">The host the module is attached to</param>
 		/// <param name="replacedModule">The module that the new module replaces, is null if no module was replaced</param>
 		internal protected virtual void AttachTo(XmasUniversal Host, UniversalModule replacedModule)
 		{
@@ -112,12 +112,12 @@ namespace XmasEngineModel.EntityLib.Module
 			get { return replacedModule; }
 		}
 
-		/// <summary>
-		/// Gets the priority of the module, used to determine its place in the module link (higher value = higher priority)
-		/// </summary>
-		//public virtual int Priority
-		//{
-		//	get { return 0; }
-		//}
+        ///// <summary>
+        ///// Gets the priority of the module, used to determine its place in the module link (higher value = higher priority)
+        ///// </summary>
+        ////public virtual int Priority
+        ////{
+        ////	get { return 0; }
+        ////}
 	}
 }
