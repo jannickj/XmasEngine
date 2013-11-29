@@ -16,7 +16,7 @@ namespace XmasEngineModel.Management.Events
             }
         }
 
-        public ActionFailedEvent(TAction failedAction, Exception e) : base(failedAction, e)
+		internal ActionFailedEvent(TAction failedAction, Exception e) : base(failedAction, e)
         {
 
         }

@@ -52,6 +52,7 @@
     <Compile Include="ExampleObjects\UnitTakesDamagePostEvent.cs" />
     <Compile Include="ExampleObjects\UnitTakesDamagePreEvent.cs" />
     <Compile Include="ExampleObjects\Wall.cs" />
+    <Compile Include="Model\ActionManagerTest.cs" />
     <Compile Include="Model\Conversion\GooseConversionToolTest.cs" />
     <Compile Include="Model\Data\PointTest.cs" />
     <Compile Include="Model\EIS\EISAgentControllerTest.cs">
