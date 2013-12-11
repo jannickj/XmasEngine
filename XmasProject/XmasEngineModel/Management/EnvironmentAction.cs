@@ -15,7 +15,11 @@ namespace XmasEngineModel.Management
             get { return raiseActionEvtOn; }
         }
 
-        public void RaiseActionEventOn(XmasUniversal xuni)
+        /// <summary>
+        /// Adds an XmasUniversal to a list of Universals that has an Action Failed/Started/Completed event raised on them
+        /// </summary>
+        /// <param name="xuni">XmasUniversal to have an ActionEvent raised on it</param>
+        public void AddRaiseActionEvent(XmasUniversal xuni)
         {
             this.raiseActionEvtOn.Add(xuni);
         }
