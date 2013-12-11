@@ -79,11 +79,13 @@
     <Compile Include="Management\EventManager.cs" />
     <Compile Include="Management\Events\ActionCompletedEvent.cs" />
     <Compile Include="Management\Events\ActionFailedEvent.cs" />
+    <Compile Include="Management\Events\ActionHandShakeInqueryEvent.cs" />
     <Compile Include="Management\Events\ActionStartingEvent.cs" />
     <Compile Include="Management\Events\EngineCloseEvent.cs" />
     <Compile Include="Management\Events\EntityAddedEvent.cs" />
     <Compile Include="Management\Events\RetreivePerceptsEvent.cs" />
     <Compile Include="Management\Events\TriggerFailedEvent.cs" />
+    <Compile Include="Management\HandShake.cs" />
     <Compile Include="Management\XmasAction.cs" />
     <Compile Include="Management\XmasEvent.cs" />
     <Compile Include="Management\Actions\TimedAction.cs" />

@@ -17,6 +17,8 @@ namespace XmasEngineModel.Management
 		private bool actionfailed = false;
         private Exception actionfailedException = null;
         private HashSet<XmasAction> subactions = new HashSet<XmasAction>();
+        public bool HandShakeRequired { get; set; }
+        internal bool HandShakeCompleted { get; set; }
 
         /// <summary>
         /// gets whether or not the action failed

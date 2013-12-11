@@ -46,6 +46,9 @@ namespace XmasEngineModel.Management
 
 		private void foreignTriggermanager_EventRaised(object sender, UnaryValueEvent<XmasEvent> evt)
 		{
+            if (evt.Value.NotThreadSafe)
+                return;
+
 			EventHandler buffer = EventRecieved;
 			this.queue.Enqueue(evt.Value);
 

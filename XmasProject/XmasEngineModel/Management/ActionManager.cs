@@ -13,6 +13,7 @@ namespace XmasEngineModel.Management
     /// </summary>
 	public class ActionManager
 	{
+        private HashSet<XmasAction> awaitingHandShake = new HashSet<XmasAction>();
 		private Queue<XmasAction> awaitingActions = new Queue<XmasAction>();
 		private HashSet<XmasAction> runningActions = new HashSet<XmasAction>();
 		private EventManager evtman;
@@ -57,7 +58,7 @@ namespace XmasEngineModel.Management
                 {
                     foreach (var xuni in envact.RaiseActionEvtOn)
                     {
-                        xuni.RaiseSecretly(evt);
+                        xuni.RaiseNonRecursive(evt);
                     }
                 }
             }
@@ -128,29 +129,43 @@ namespace XmasEngineModel.Management
 
         internal void ExecuteAction(XmasAction action)
         {
-            if (PreActionExecution != null)
-                PreActionExecution(this, new UnaryValueEvent<XmasAction>(action));
-            runningActions.Add(action);
-            action.Resolved += action_Resolved;
-            action.Completed += action_Completed;
-
-            var startingevent = (XmasEvent)Generics.InstantiateGenericClass(typeof(ActionStartingEvent<>), new Type[] { action.GetType() }, action.Clone());
-            raiseEventForAction(action, startingevent);
-
-            try
+            if (!action.HandShakeCompleted)
             {
-                action.Fire();
+                if (PreActionExecution != null)
+                    PreActionExecution(this, new UnaryValueEvent<XmasAction>(action));
+                runningActions.Add(action);
+                action.Resolved += action_Resolved;
+                action.Completed += action_Completed;
+
+                var handshakeInquryevt = (XmasEvent)Generics.InstantiateGenericClass(typeof(ActionHandShakeInqueryEvent<>), new Type[] { action.GetType() }, action);
+                raiseEventForAction(action, handshakeInquryevt);
+
+                var startingevent = (ActionStartingEvent)Generics.InstantiateGenericClass(typeof(ActionStartingEvent<>), new Type[] { action.GetType() }, action.Clone());
+                if (action.HandShakeRequired)
+                {
+                    startingevent.HandShakeNeeded = true;
+                    startingevent.HandShake = new HandShake(this, action);
+                }
+                raiseEventForAction(action, startingevent);
+            }
+
+            if (!action.HandShakeRequired || action.HandShakeCompleted)
+            {
+                try
+                {
+                    action.Fire();
                 
-            }
-            catch (ForceStopEngineException e)
-            {
-                throw e;
-            }
-            catch (Exception e)
-            {
-                action.Fail(e);
-                this.evtman.Raise(new ActionFailedEvent(action,e));
+                }
+                catch (ForceStopEngineException e)
+                {
+                    throw e;
+                }
+                catch (Exception e)
+                {
+                    action.Fail(e);
+                    this.evtman.Raise(new ActionFailedEvent(action,e));
 
+                }
             }
         }
 
@@ -177,5 +192,18 @@ namespace XmasEngineModel.Management
 					ActionQueued(this, new UnaryValueEvent<XmasAction>(action));
 			}
 		}
-	}
+
+        internal void AcceptHandShake(HandShake handShake)
+        {
+            lock (this)
+            {
+                if(this.awaitingHandShake.Contains(handShake.Action))
+                {
+                    handShake.Action.HandShakeCompleted = true;
+                    this.awaitingHandShake.Remove(handShake.Action);
+                    this.awaitingActions.Enqueue(handShake.Action);
+                }
+            }
+        }
+    }
 }

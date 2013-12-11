@@ -28,7 +28,7 @@ namespace XmasEngineModel.EntityLib
             }
         }
 
-        internal void RaiseSecretly(XmasEvent evt)
+        internal void RaiseNonRecursive(XmasEvent evt)
         {
             lock (this)
             {
