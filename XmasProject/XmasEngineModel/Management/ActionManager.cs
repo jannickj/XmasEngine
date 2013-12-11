@@ -145,6 +145,7 @@ namespace XmasEngineModel.Management
                 {
                     startingevent.HandShakeNeeded = true;
                     startingevent.HandShake = new HandShake(this, action);
+					this.awaitingHandShake.Add(action);
                 }
                 raiseEventForAction(action, startingevent);
             }

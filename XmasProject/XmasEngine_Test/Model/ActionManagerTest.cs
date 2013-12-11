@@ -30,5 +30,46 @@ namespace XmasEngine_Test.Model
 			Assert.IsTrue(evtRaised);
 
 		}
+
+		
+
+		[Test]
+		public void ExecuteActionWithHandShake_HandShakeGiven_ActionExecuted()
+		{
+			HandShake handshake = null;
+			bool actionExecuted = false;
+			var action = new SimpleAction(sa => actionExecuted = true);
+			action.HandShakeRequired = true;
+			this.EventManager.Register(new Trigger<ActionStartingEvent<SimpleAction>>(evt => handshake = evt.HandShake));
+			this.ActionManager.Queue(action);
+			this.ActionManager.ExecuteActions();
+			Assert.IsFalse(actionExecuted);
+
+			handshake.PerformHandShake();
+			this.ActionManager.ExecuteActions();
+
+			Assert.IsTrue(actionExecuted);
+
+
+		}
+
+		[Test]
+		public void ExecuteActionWithoutHandShake_HandShakeRequirementInjected_ActionExecutedOnHandShake()
+		{
+			HandShake handshake = null;
+			bool actionExecuted = false;
+			var action = new SimpleAction(sa => actionExecuted = true);
+			this.EventManager.Register(new Trigger<ActionHandShakeInqueryEvent<SimpleAction>>(evt => evt.Action.HandShakeRequired = true));
+			this.EventManager.Register(new Trigger<ActionStartingEvent<SimpleAction>>(evt => handshake = evt.HandShake));
+			this.ActionManager.Queue(action);
+			this.ActionManager.ExecuteActions();
+			Assert.IsFalse(actionExecuted);
+
+			handshake.PerformHandShake();
+			this.ActionManager.ExecuteActions();
+
+			Assert.IsTrue(actionExecuted);
+		}
+
 	}
 }
