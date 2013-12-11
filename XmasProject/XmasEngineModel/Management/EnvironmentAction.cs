@@ -1,4 +1,6 @@
-﻿namespace XmasEngineModel.Management
+﻿using System.Collections.Generic;
+using XmasEngineModel.EntityLib;
+namespace XmasEngineModel.Management
 {
 
     /// <summary>
@@ -6,5 +8,16 @@
     /// </summary>
 	public abstract class EnvironmentAction : XmasAction
 	{
+        private List<XmasUniversal> raiseActionEvtOn = new List<XmasUniversal>();
+
+        internal IEnumerable<XmasUniversal> RaiseActionEvtOn
+        {
+            get { return raiseActionEvtOn; }
+        }
+
+        public void RaiseActionEventOn(XmasUniversal xuni)
+        {
+            this.raiseActionEvtOn.Add(xuni);
+        }
 	}
 }

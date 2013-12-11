@@ -42,6 +42,27 @@ namespace XmasEngineModel.Management
 			get { return awaitingActions.ToArray(); }
 		}
 
+        private void raiseEventForAction(XmasAction act, XmasEvent evt)
+        {
+            var envact = act as EnvironmentAction;
+            var entact = act as EntityXmasAction;
+            if (entact != null)
+            {
+                entact.Source.Raise(evt);
+            }
+            else
+            {
+                evtman.Raise(evt);
+                if (envact != null)
+                {
+                    foreach (var xuni in envact.RaiseActionEvtOn)
+                    {
+                        xuni.RaiseSecretly(evt);
+                    }
+                }
+            }
+        }
+
 		#region EVENTS
 
 		private void action_Resolved(object sender, EventArgs e)
@@ -52,11 +73,7 @@ namespace XmasEngineModel.Management
             if (ga.ActionFailed)
             {
                 var failedevent = (XmasEvent)Generics.InstantiateGenericClass(typeof(ActionFailedEvent<>), new Type[] { ga.GetType() }, ga.Clone(),ga.ActionFailedException);
-                var entact = ga as EntityXmasAction;
-                if (entact != null)
-                    entact.Source.Raise(failedevent);
-                else
-                    this.evtman.Raise(failedevent);
+                raiseEventForAction(ga, failedevent);
             }
             
 		}
@@ -67,11 +84,8 @@ namespace XmasEngineModel.Management
             ga.Completed -= action_Completed;
 
             var completedevent = (XmasEvent)Generics.InstantiateGenericClass(typeof(ActionCompletedEvent<>), new Type[] { ga.GetType() }, ga.Clone());
-            var entact = ga as EntityXmasAction;
-            if (entact != null)
-                entact.Source.Raise(completedevent);
-            else
-                this.evtman.Raise(completedevent);
+
+            raiseEventForAction(ga, completedevent);
 
         }
 
@@ -121,11 +135,7 @@ namespace XmasEngineModel.Management
             action.Completed += action_Completed;
 
             var startingevent = (XmasEvent)Generics.InstantiateGenericClass(typeof(ActionStartingEvent<>), new Type[] { action.GetType() }, action.Clone());
-            var entact = action as EntityXmasAction;
-            if (entact != null)
-                entact.Source.Raise(startingevent);
-            else
-                this.evtman.Raise(startingevent);
+            raiseEventForAction(action, startingevent);
 
             try
             {

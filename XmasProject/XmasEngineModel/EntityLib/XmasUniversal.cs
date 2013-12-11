@@ -28,6 +28,16 @@ namespace XmasEngineModel.EntityLib
             }
         }
 
+        internal void RaiseSecretly(XmasEvent evt)
+        {
+            lock (this)
+            {
+                triggers.Raise(evt);
+                
+            }
+
+        }
+
 
         /// <summary>
         /// Is called when the object is added to an engine
