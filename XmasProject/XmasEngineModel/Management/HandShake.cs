@@ -7,20 +7,17 @@ namespace XmasEngineModel.Management
 {
     public class HandShake
     {
-        private ActionManager manager;
-        internal XmasAction Action { get; set; }
+        public XmasAction Action { get; internal set; }
 
-        public HandShake(ActionManager actionManager, XmasAction action)
+        internal HandShake( XmasAction action)
         {
-            // TODO: Complete member initialization
-            this.manager = actionManager;
             this.Action = action;
         }
         
 
         public void PerformHandShake()
         {
-            manager.AcceptHandShake(this);
+            this.Action.ActionManager.AcceptHandShake(this);
         }
     }
 }

@@ -20,6 +20,13 @@ namespace XmasEngineModel.Management
         public bool HandShakeRequired { get; set; }
         internal bool HandShakeCompleted { get; set; }
 
+
+        public HandShake ObtainHandShake()
+        {
+            HandShakeRequired = true;
+            return new HandShake(this);
+        }
+
         /// <summary>
         /// gets whether or not the action failed
         /// </summary>
