@@ -1,6 +1,7 @@
 ﻿using XmasEngineModel.EntityLib;
 using XmasEngineModel.Management.Events;
 using XmasEngineModel.World;
+using System;
 
 namespace XmasEngineModel.Management.Actions
 {
@@ -13,6 +14,7 @@ namespace XmasEngineModel.Management.Actions
 		{
 			this.ent = ent;
 			this.info = info;
+           
 		}
 
 		protected override void Execute()
