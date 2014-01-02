@@ -17,17 +17,7 @@ namespace XmasEngineModel.Management.Actions
 
 		protected override void Execute()
 		{
-			XmasActor actor = Object as XmasActor;
-			if (actor != null)
-			{
-				actor.ActionManager = ActionManager;
-				actor.EventManager = EventManager;
-				actor.World = World;
-				actor.Factory = Factory;
-
-                if (actor is XmasUniversal)
-                    ((XmasUniversal)actor).OnAddedToEngine();
-			}
+            this.Engine.AddActor(Object);
 		}
 	}
 }

@@ -6,6 +6,7 @@ using XmasEngineModel.Interfaces;
 using XmasEngineModel.Management;
 using XmasEngineModel.Management.Events;
 using XmasEngineModel.EntityLib;
+using System.Collections.Generic;
 
 namespace XmasEngineModel
 {
@@ -22,7 +23,8 @@ namespace XmasEngineModel
 		private bool stopEngine;
 		private XmasWorld world;
         private XmasWorldBuilder wbuilder;
-
+        private Dictionary<ulong, XmasObject> xobjLookup = new Dictionary<ulong, XmasObject>();
+        private ulong nextId = 1;
         
 
 		public XmasModel(XmasWorldBuilder builder, ActionManager actman, EventManager evtman, XmasFactory factory)
@@ -38,9 +40,11 @@ namespace XmasEngineModel
 			EventManager.Register(new Trigger<EngineCloseEvent>(evtman_EngineClose));
 			ActionManager.PreActionExecution += actman_PreActionExecution;
 			ActionManager.ActionQueued += actman_ActionQueued;
-
-			
+            world.EntityAdded += new UnaryValueHandler<XmasEntity>(world_EntityAdded);
+            world.EntityRemoved += new UnaryValueHandler<XmasEntity>(world_EntityRemoved);
 		}
+
+        
 
         
 
@@ -120,22 +124,78 @@ namespace XmasEngineModel
 			return false;
 		}
 
+
+        private void AddObject(XmasObject xobj)
+        {
+            lock (this)
+            {
+                xobj.Id = nextId;
+                this.xobjLookup.Add(xobj.Id, xobj);
+                nextId++;
+            }
+        }
+
+        private void RemoveObject(XmasObject xobj)
+        {
+            lock (this)
+            {
+                if (this.xobjLookup.ContainsKey(xobj.Id))
+                    this.xobjLookup.Remove(xobj.Id);
+            }
+        }
+
+        /// <summary>
+        /// Attempts to locate an XmasObject Given an ID, otherwise returns NULL(this method is threadsafe)
+        /// </summary>
+        /// <param name="id">The ID of the object</param>
+        /// <returns></returns>
+        public XmasObject FindObject(ulong id)
+        {
+            XmasObject obj = null;
+            lock (this)
+            {
+                this.xobjLookup.TryGetValue(id, out obj);
+            }
+            return obj;
+        }
+
+
+        public TAs FindObjectAs<TAs>(ulong id)
+            where TAs : XmasObject
+        {
+            return (TAs)FindObject(id);
+        }
+
         /// <summary>
         /// Makes an actor part of the engine, by providing it with all necessary tools
         /// </summary>
         /// <param name="actor">The actor to be made part of the engine</param>
-		public void AddActor(XmasActor actor)
+		public void AddActor(XmasObject actor)
 		{
-			actor.ActionManager = ActionManager;
-			actor.EventManager = EventManager;
-			actor.World = World;
-			actor.Factory = Factory;
-
+            this.AddObject(actor);
+            if (actor is XmasActor)
+            {
+                var aactor = (XmasActor)actor;
+                aactor.ActionManager = ActionManager;
+                aactor.EventManager = EventManager;
+                aactor.World = World;
+                aactor.Factory = Factory;
+            }
             if (actor is XmasUniversal)
                 ((XmasUniversal)actor).OnAddedToEngine();
 		}
 
 		#region EVENTS
+
+        void world_EntityRemoved(object sender, UnaryValueEvent<XmasEntity> evt)
+        {
+            this.RemoveObject(evt.Value);
+        }
+
+        void world_EntityAdded(object sender, UnaryValueEvent<XmasEntity> evt)
+        {
+            this.AddObject(evt.Value);
+        }
 
 		private void evtman_EngineClose(EngineCloseEvent e)
 		{
@@ -150,6 +210,7 @@ namespace XmasEngineModel
 			evt.Value.Factory = Factory;
 			evt.Value.World = World;
 			evt.Value.ActionManager = ActionManager;
+            evt.Value.Engine = this;
 		}
 
 		private void actman_ActionQueued(object sender, UnaryValueEvent<XmasAction> evt)

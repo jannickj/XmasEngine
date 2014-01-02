@@ -19,6 +19,7 @@ namespace XmasEngineModel.Management
         private HashSet<XmasAction> subactions = new HashSet<XmasAction>();
         public bool HandShakeRequired { get; set; }
         internal bool HandShakeCompleted { get; set; }
+        public XmasModel Engine { get; internal set; }
 
 
         public HandShake ObtainHandShake()

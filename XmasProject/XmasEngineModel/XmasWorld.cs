@@ -4,6 +4,7 @@ using XmasEngineModel.Exceptions;
 using XmasEngineModel.Management;
 using XmasEngineModel.Management.Events;
 using XmasEngineModel.World;
+using JSLibrary.Data.GenericEvents;
 
 namespace XmasEngineModel
 {
@@ -13,10 +14,10 @@ namespace XmasEngineModel
     /// </summary>
 	public abstract class XmasWorld
 	{
-		private ulong nextId = 1;
 		private Dictionary<string,Agent> agentLookup = new Dictionary<string, Agent>();
-		private Dictionary<ulong,XmasEntity> entityLookup = new Dictionary<ulong, XmasEntity>();
 		private EventManager evtman;
+        internal event UnaryValueHandler<XmasEntity> EntityAdded;
+        internal event UnaryValueHandler<XmasEntity> EntityRemoved;
 
         /// <summary>
         /// Gets or sets the EventManager of the engine
@@ -60,11 +61,10 @@ namespace XmasEngineModel
 			bool entityadded = OnAddEntity(xmasEntity, info);
 			if (entityadded)
 			{
-          
 
-				xmasEntity.Id = nextId;
-				this.entityLookup.Add(xmasEntity.Id,xmasEntity);
-				nextId++;
+                if (this.EntityAdded != null)
+                    this.EntityAdded(this, new UnaryValueEvent<XmasEntity>(xmasEntity));
+				
 
 				EventManager.Raise(new EntityAddedEvent(xmasEntity,info.Position));
 
@@ -87,7 +87,9 @@ namespace XmasEngineModel
 				agentLookup.Remove(agent.Name);
 			}
 
-			entityLookup.Remove (entity.Id);
+            if (this.EntityRemoved != null)
+                this.EntityRemoved(this, new UnaryValueEvent<XmasEntity>(entity));
+			
 
 			OnRemoveEntity(entity);
 
