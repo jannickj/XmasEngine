@@ -61,7 +61,10 @@ namespace XmasEngineModel.EntityLib
 		/// </summary>
 		public XmasPosition Position
 		{
-			get { return World.GetEntityPosition(this); }
+			get 
+			{
+				return World.GetEntityPosition(this); ;
+			}
 		}
 
 

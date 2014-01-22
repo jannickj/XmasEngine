@@ -21,7 +21,7 @@ namespace XmasEngineModel
 		{
 			get {
 				if (world == null)
-					throw new PropertyIsNullException("World", this);
+					throw new PropertyIsNullException("World", this.GetType().Name);
 				return world; }
 			set { world = value; }
 		}
