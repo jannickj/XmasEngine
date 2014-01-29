@@ -23,10 +23,11 @@ namespace XmasEngineController.AI
 		{
 			while (true)
 			{
-				Func<KeyValuePair<string, AgentController>> agentcontroller = AquireAgentControllerContructor();
-				Thread thread = null;
-				thread = Factory.CreateThread(() => agent_Thread(agentcontroller));
-				thread.Start();
+                Func<KeyValuePair<string, AgentController>> agentcontroller = AquireAgentControllerContructor();
+                Thread thread = null;
+                thread = Factory.CreateThread(() => agent_Thread(agentcontroller));
+                thread.Start();
+
 			}
 		}
 
@@ -40,23 +41,27 @@ namespace XmasEngineController.AI
 		private void agent_Thread(Func<KeyValuePair<string, AgentController>> constructor)
 		{
 			KeyValuePair<string, AgentController> agent;
-			try
-			{
-				if (this.AgentControllerConstructionTimeOut == 0)
-				{
-					agent = constructor();
-				}
-				else
-					Parallel.TryExecute(constructor, this.AgentControllerConstructionTimeOut, out agent);
+            try
+            {
+                if (this.AgentControllerConstructionTimeOut == 0)
+                {
+                    agent = constructor();
+                }
+                else
+                    Parallel.TryExecute(constructor, this.AgentControllerConstructionTimeOut, out agent);
 
-				Thread.CurrentThread.Name = agent.Key+" Thread";
-				
-				agent.Value.Start();
-			}
-			catch (TimeoutException)
-			{
-				throw new TimeoutException("Agent Controller construction timed out");
-			}
+                Thread.CurrentThread.Name = agent.Key + " Thread";
+
+                agent.Value.Start();
+            }
+            catch (TimeoutException)
+            {
+                throw new TimeoutException("Agent Controller construction timed out");
+            }
+            catch (Exception e)
+            {
+
+            }
 		}
 
         /// <summary>
